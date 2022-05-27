@@ -41,7 +41,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="2">Sum</td>
+                  <td colspan="2">Total</td>
                   <td>{{ getTotal }}</td>
                 </tr>
               </tfoot>
@@ -52,10 +52,8 @@
 
 <script lang="ts">
 import {
-  computed,
-  defineComponent,
-  ref,
-    onMounted,
+ defineComponent, computed
+ 
 } from '@nuxtjs/composition-api'
 import ProductService from '../common/service/category.service'
 import { usePrudctos } from '~/Hooks/useProductos'
@@ -66,18 +64,23 @@ const index = defineComponent({
  
 
    
-    const { addToCar, addQuantity, subQuantity, getListCar } = useShop()
+    const { addQuantity, subQuantity, getListCar } = useShop()
  
  
 
-   
+    const getTotal = computed(() => {
+      const total = getListCar.value.reduce((prev: any, current: any) => {
+        return prev + current.price * current.quantity
+      }, 0)
+      return total
+    })
 
   
 
     
 
     return {
-     
+      getTotal,
       getListCar, 
       addQuantity,
       subQuantity,
